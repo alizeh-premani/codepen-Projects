@@ -1,0 +1,72 @@
+player1 = input('pick your symbol X/O')
+player1 = player1.upper()
+while player1 != 'X' and player1 != 'O':
+    player1 = input('Symbol not available. Try Again')
+    player1 = player1.upper()
+if player1 == 'X':
+    player2 = 'O'
+else:
+    player2 = 'X'
+
+number = 0
+
+board = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+def printboard():
+    print(board[0], board[1], board[2])
+    print(board[3], board[4], board[5])
+    print(board[6], board[7], board[8])
+
+printboard()
+
+conditions = [board[0] == board[1] == board[2], board[0] == board[3] == board[6], board[2] == board[5] == board[8],
+              board[3] == board[4] == board[5], board[6] == board[7] == board[8], board[0] == board[4] == board[8],
+              board[2] == board[4] == board[6], board[1] == board[4] == board[7]]
+
+def searchcondition():
+    for count in conditions:
+        if count == True:
+            break
+    return count
+
+def checkVal(turn):
+    while turn.isnumeric() == False or len(turn) > 1 or turn == '0':
+        if turn.isalpha() == True or turn == '0' or len(turn) > 1:
+            turn = input('Invalid input. Choose an integer between 1 and 9')
+    turn = int(turn)
+    return turn
+def checkPos(turn):
+    while board[turn - 1] == 'X' or board[turn - 1] == 'O':
+        turn = input('This position has already been chosen. Try again')
+        turn = int(turn)
+    return turn
+
+while searchcondition() == False and number < 5:
+    turn1 = input('Player 1: In which position do you want to enter your symbol?')
+    turn1 = checkVal(turn1)
+    turn1 = checkPos(turn1)
+    board[turn1 - 1] = player1
+    printboard()
+
+    conditions = [board[0] == board[1] == board[2], board[0] == board[3] == board[6], board[2] == board[5] == board[8],
+                  board[3] == board[4] == board[5], board[6] == board[7] == board[8], board[0] == board[4] == board[8],
+                  board[2] == board[4] == board[6], board[1] == board[4] == board[7]]
+    if searchcondition() == True:
+        print('Player 1 wins!')
+        break
+    elif searchcondition() == False and number == 4:
+        print('its a draw!')
+        break
+    else:
+        turn2 = input('Player 2: In which position do you want to enter your symbol?')
+        turn2 = checkVal(turn2)
+        turn2 = checkPos(turn2)
+        board[turn2 - 1] = player2
+        printboard()
+        number = number + 1
+        conditions = [board[0] == board[1] == board[2], board[0] == board[3] == board[6], board[2] == board[5] == board[8],
+                      board[3] == board[4] == board[5], board[6] == board[7] == board[8], board[0] == board[4] == board[8],
+                      board[2] == board[4] == board[6], board[1] == board[4] == board[7]]
+        if searchcondition() == True:
+            print('Player 2 wins!')
+            break
